@@ -2,7 +2,6 @@ import random
 import time
 import requests
 from bs4 import BeautifulSoup
-import re
 import sqlite3
 
 
@@ -82,8 +81,8 @@ def main():
     c = conn.cursor()
     #query_create='CREATE TABLE data (price TEXT, address_line_1 TEXT, address_line_2 TEXT, Sold_date TEXT, beds TEXT, baths TEXT, carpark TEXT, space TEXT, link TEXT);'
     # c.execute(query_create)
-    postcode_range = [2121]  # scrapy postcode range
-    page_range = 1  # scrapy page range for a postcode
+    postcode_range = [2121,2040]  # scrapy postcode range
+    page_range = 30  # scrapy page range for a postcode
     query_insert = 'INSERT INTO data VALUES (?,?,?,?,?,?,?,?,?);'
     query_verify = 'SELECT * FROM data WHERE link=?;'
     for p in postcode_range:
@@ -106,4 +105,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
