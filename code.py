@@ -82,26 +82,36 @@ def main():
     #query_create='CREATE TABLE data (price TEXT, address_line_1 TEXT, address_line_2 TEXT, Sold_date TEXT, beds TEXT, baths TEXT, carpark TEXT, space TEXT, link TEXT);'
     # c.execute(query_create)
     postcode_range = [2121,2040]  # scrapy postcode range
-    page_range = 30  # scrapy page range for a postcode
-    query_insert = 'INSERT INTO data VALUES (?,?,?,?,?,?,?,?,?);'
-    query_verify = 'SELECT * FROM data WHERE link=?;'
+    page_range = 20  # scrapy page range for a postcode
+    #query_insert = 'INSERT INTO data VALUES (?,?,?,?,?,?,?,?,?);'
+    #query_verify = 'SELECT * FROM data WHERE link=?;'
     for p in postcode_range:
-        for page in range(1, page_range):
-            page_result = extract_data(get_content_apt(p, page))
-            for result in page_result:
-                link = result[8]
-                #verify duplicate#
-                c.execute(query_verify, (link,))
-                verify_result = c.fetchone()
-                if verify_result:
-                    print('pass')
-                else:
-                    c.execute(query_insert, result)
-                print(page)
-            time.sleep(random.randint(10, 20))
+    	query_insert = 'INSERT INTO p' + str(p) +' VALUES (?,?,?,?,?,?,?,?,?);'
+    	query_create = 'CREATE TABLE p' + str(p) + ' (price TEXT, address_line_1 TEXT, address_line_2 TEXT, Sold_date TEXT, beds TEXT, baths TEXT, carpark TEXT, space TEXT, link TEXT);'
+    	try:
+    		c.execute(query_create)
+    	except:
+    		pass
+    	else:
+    		pass
+    	for page in range(1, page_range):
+        	page_result = extract_data(get_content_apt(p, page))
+        	for result in page_result:
+        		link = result[8]
+        		#verify duplicate#
+        		query_verify = 'SELECT * FROM p'+ str(p) +' WHERE link=?;'
+        		c.execute(query_verify, (link,))
+        		verify_result = c.fetchone()
+        		if verify_result:
+        			print('Record Exists'+ ' PostCode- '+str(p) +' Page-'+ str(page))
+        		else:
+        			c.execute(query_insert, result)
+        			print('working on PostCode-' + str(p) +' Page-'+ str(page))
+        	time.sleep(random.randint(10, 20))
     conn.commit()
     conn.close()
 
 
 if __name__ == '__main__':
     main()
+
