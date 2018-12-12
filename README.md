@@ -20,9 +20,13 @@ Note: Also includes a Dockerfile which can be composed to a Docker image based o
 ### Installing
 
 Copy all files into same path
+
 Line 100 - change the Unit type you want scrapy[get_content_apt] or [get_content_house]
+
 Line 86/87 - define the postcode and page range
+
 Line 112 - define the scrapy frequency between pages
+
 Line 123 - define the scrapy code run daily or ....(default is 86400 seconds=24hrs)
 
 ## Deployment
