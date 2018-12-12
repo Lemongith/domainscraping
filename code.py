@@ -3,6 +3,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 import sqlite3
+import datetime
 
 
 def get_content_apt(
@@ -109,6 +110,14 @@ def main():
 	        			c.execute(query_insert, result)
 	        			print('working on PostCode-' + str(p) +' Page-'+ str(page))
 	        	time.sleep(random.randint(10, 20))
+	    	try:
+	        	c.execute('CREATE TABLE LOG VALUES (PostCode TEXT, Page TEXT, TIME TEXT);')
+	    	except:
+	        	pass
+	    	else:
+	        	pass
+	    	current_time=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+	    	c.execute('INSERT INTO LOG VALUES (?,?,?);',(p,page,current_time))
 	    conn.commit()
 	    conn.close()
 	    time.sleep(86400)
