@@ -1,6 +1,6 @@
 # Domainscrapy Project
 
-Scrapy Project for Domain Website (https://domain.com.au). Based on Python. Will scrapy the sold units within a particular Postcode with particular result page (20 by default). All search result (inc. Soldprice, Address, Beds, Baths, Carpark, Space, URL) will be saved into SQL file. 
+Scrapy Project for Domain Website (https://domain.com.au). Based on Python. Will scrapy the sold units within a particular Postcode with particular result page (20 by default). All search result (inc. Soldprice, Address, Beds, Baths, Carpark, Space, URL) will be saved into db file. 
 
 ## Getting Started
 
@@ -9,7 +9,7 @@ Note: Also includes a Dockerfile which can be composed to a Docker image based o
 
 1. Specify the Postcode and Page range you want to scrapy
 2. It will extract data from HTML Requests (search for Apartment or House&Townhouse has two different functions)
-3. Then will verify if record duplicate, new record will be inserted into a separate Table [e.g.p2020] in SQL file (test.db by default) via SQLite3. 
+3. Then will verify if record duplicate, new record will be inserted into a separate Table [e.g.p2020] in db file (test.db by default) via SQLite3. 
 4. After crawling all pages, it will sleep 24hrs [by default] then start again.
 
 ### Prerequisites
@@ -20,6 +20,10 @@ Note: Also includes a Dockerfile which can be composed to a Docker image based o
 ### Installing
 
 Copy all files into same path
+Line 100 - change the Unit type you want scrapy[get_content_apt] or [get_content_house]
+Line 86/87 - define the postcode and page range
+Line 112 - define the scrapy frequency between pages
+Line 123 - define the scrapy code run daily or ....(default is 86400 seconds=24hrs)
 
 ## Deployment
 
