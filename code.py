@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import sqlite3
 import datetime
-
+from pytz import timezone
 
 def get_content_apt(
         postcode,
@@ -83,7 +83,7 @@ def main():
 	    c = conn.cursor()
 	    #query_create='CREATE TABLE data (price TEXT, address_line_1 TEXT, address_line_2 TEXT, Sold_date TEXT, beds TEXT, baths TEXT, carpark TEXT, space TEXT, link TEXT);'
 	    # c.execute(query_create)
-	    postcode_range = [2121,2040]  # scrapy postcode range
+	    postcode_range = range(2000,2050)  # scrapy postcode range
 	    page_range = 20  # scrapy page range for a postcode
 	    #query_insert = 'INSERT INTO data VALUES (?,?,?,?,?,?,?,?,?);'
 	    #query_verify = 'SELECT * FROM data WHERE link=?;'
@@ -111,12 +111,13 @@ def main():
 	        			print('working on PostCode-' + str(p) +' Page-'+ str(page))
 	        	time.sleep(random.randint(10, 20))
 	    	try:
-	        	c.execute('CREATE TABLE LOG VALUES (PostCode TEXT, Page TEXT, TIME TEXT);')
+	        	c.execute('CREATE TABLE LOG (PostCode TEXT, Page TEXT, TIME TEXT);')
 	    	except:
 	        	pass
 	    	else:
 	        	pass
-	    	current_time=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+	    	current_time=datetime.datetime.now(timezone('Australia/Sydney')).strftime('%Y-%m-%d %H:%M:%S')
+	    	print(current_time)
 	    	c.execute('INSERT INTO LOG VALUES (?,?,?);',(p,page,current_time))
 	    conn.commit()
 	    conn.close()
