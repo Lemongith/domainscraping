@@ -32,7 +32,8 @@ Line 123 - define the scrapy code run daily or ....(default is 86400 seconds=24h
 ## Deployment
 
 1.Open SQLite3 and create a .db file.
-2.Run code.py to start scrapy.
+(optional)CLI:docker build -t python-image .
+2.Run code.py to start scrapy. (or docker run -it --rm --name my-scrapy -v /home/[your code.py path]:/usr/src/myapp -w /usr/src/myapp python-image python code.py)
 
 ## Authors
 
