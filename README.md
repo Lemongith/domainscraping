@@ -37,7 +37,7 @@ Line 123 - define the scrapy code run daily or ....(default is 86400 seconds=24h
 
 ## Authors
 
-**Hugh Tan**(https://github.com/Lemongith)
+**Hugh Tan**(https://github.com/Lemongith)lemontan.hugh@gmail.com
 
 ## Acknowledgments
 
