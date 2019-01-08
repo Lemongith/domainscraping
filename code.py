@@ -38,7 +38,8 @@ def extract_data(content):
     list = content.find_all(class_="search-results__listing")
     current_page_result = []
     for d in list:
-        if d.find(class_="listing-result__price"):  # too kickout advertise
+        if d.find(class_="listing-result__price"):  # to kickout advertise
+            price=address_line_1=address_line_2=sold_date='null'
             if d.find(class_="listing-result__price"):
                 price = d.find(class_="listing-result__price").get_text()
             if d.find(class_="address-line1"):
@@ -46,8 +47,7 @@ def extract_data(content):
             if d.find(class_="address-line2"):
                 address_line_2 = d.find(class_="address-line2").get_text()
             if d.find(class_="listing-result__tag is-sold"):
-                sold_date = d.find(
-                    class_="listing-result__tag is-sold").get_text()
+                sold_date = d.find(class_="listing-result__tag is-sold").get_text()
             # to get beds, baths, carpark, space
             bbcs = d.find_all(
                 class_="property-feature__feature-text-container")
@@ -88,6 +88,7 @@ def main():
 	    c = conn.cursor()
 	    #query_create='CREATE TABLE data (price TEXT, address_line_1 TEXT, address_line_2 TEXT, Sold_date TEXT, beds TEXT, baths TEXT, carpark TEXT, space TEXT, link TEXT);'
 	    # c.execute(query_create)
+	    
 	    postcode_range = [2000, 2007, 2008, 2009, 2010, 2011, 2015, 2016, 2017, 2018, 2019, 
 	    2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040, 2041, 2042, 2043, 2044, 2045, 2046, 2047, 2048, 2049] # scrapy postcode range
 	    page_range = 20  # scrapy page range for a postcode
@@ -124,9 +125,10 @@ def main():
 	        	pass
 	    	current_time=datetime.datetime.now(timezone('Australia/Sydney')).strftime('%Y-%m-%d %H:%M:%S')
 	    	c.execute('INSERT INTO LOG VALUES (?,?,?);',(p,page,current_time))
-	    conn.commit()
+	    	conn.commit()
 	    conn.close()
 	    time.sleep(86400)
+
 
 if __name__ == '__main__':
     main()
