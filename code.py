@@ -38,7 +38,8 @@ def extract_data(content):
     list = content.find_all(class_="search-results__listing")
     current_page_result = []
     for d in list:
-        if d.find(class_="listing-result__price"):  # too kickout advertise
+        if d.find(class_="listing-result__price"):  # to kickout advertise
+            price=address_line_1=address_line_2=sold_date='null'
             if d.find(class_="listing-result__price"):
                 price = d.find(class_="listing-result__price").get_text()
             if d.find(class_="address-line1"):
@@ -46,23 +47,27 @@ def extract_data(content):
             if d.find(class_="address-line2"):
                 address_line_2 = d.find(class_="address-line2").get_text()
             if d.find(class_="listing-result__tag is-sold"):
-                sold_date = d.find(
-                    class_="listing-result__tag is-sold").get_text()
+                sold_date = d.find(class_="listing-result__tag is-sold").get_text()
             # to get beds, baths, carpark, space
             bbcs = d.find_all(
                 class_="property-feature__feature-text-container")
+            beds=baths=carpark=space='null'
             if bbcs:
-                beds = bbcs[0].get_text()
-                baths = bbcs[1].get_text()
-                carpark = bbcs[2].get_text()
-                if len(bbcs) == 4:
-                    space = bbcs[3].get_text()
-                else:
-                    space = "null"
-                # url=d.find(class_="listing-result__carousel-lazy")["href"]
+            	for item in bbcs:
+            		if 'Bed' in item.get_text():
+            			beds=item.get_text()
+            		elif 'Bath' in item.get_text():
+            			baths=item.get_text()
+            		elif 'Parking' in item.get_text():
+            			carpark=item.get_text()
+            		elif 'm²' in item.get_text():
+            			space=item.get_text()
+
+
             else:
                 pass
             link = d.find("a")["href"]
+            
             current_page_result.append([price,
                                         address_line_1,
                                         address_line_2,
@@ -83,7 +88,9 @@ def main():
 	    c = conn.cursor()
 	    #query_create='CREATE TABLE data (price TEXT, address_line_1 TEXT, address_line_2 TEXT, Sold_date TEXT, beds TEXT, baths TEXT, carpark TEXT, space TEXT, link TEXT);'
 	    # c.execute(query_create)
-	    postcode_range = range(2000,2050)  # scrapy postcode range
+	    
+	    postcode_range = [2000, 2007, 2008, 2009, 2010, 2011, 2015, 2016, 2017, 2018, 2019, 
+	    2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040, 2041, 2042, 2043, 2044, 2045, 2046, 2047, 2048, 2049] # scrapy postcode range
 	    page_range = 20  # scrapy page range for a postcode
 	    #query_insert = 'INSERT INTO data VALUES (?,?,?,?,?,?,?,?,?);'
 	    #query_verify = 'SELECT * FROM data WHERE link=?;'
@@ -96,7 +103,7 @@ def main():
 	    		pass
 	    	else:
 	    		pass
-	    	for page in range(1, page_range):
+	    	for page in range(1, page_range+1):
 	        	page_result = extract_data(get_content_apt(p, page))
 	        	for result in page_result:
 	        		link = result[8]
@@ -111,17 +118,18 @@ def main():
 	        			print('working on PostCode-' + str(p) +' Page-'+ str(page))
 	        	time.sleep(random.randint(10, 20))
 	    	try:
-	        	c.execute('CREATE TABLE LOG (PostCode TEXT, Page TEXT, TIME TEXT);')
+	        	c.execute('CREATE TABLE LOG VALUES (PostCode TEXT, Page TEXT, TIME TEXT);')
 	    	except:
 	        	pass
 	    	else:
 	        	pass
 	    	current_time=datetime.datetime.now(timezone('Australia/Sydney')).strftime('%Y-%m-%d %H:%M:%S')
-	    	print(current_time)
 	    	c.execute('INSERT INTO LOG VALUES (?,?,?);',(p,page,current_time))
-	    conn.commit()
+	    	conn.commit()
 	    conn.close()
 	    time.sleep(86400)
+
+
 if __name__ == '__main__':
     main()
 
