@@ -8,8 +8,8 @@ This code run on Python with some particular MODs. And use SQLite to save result
 Note: Also includes a Dockerfile which can be composed to a Docker image based on Python:3 with necessary MODs.
 
 1. Specify the Postcode and Page range you want to scrapy
-2. It will extract data from HTML Requests (search for Apartment or House&Townhouse has two different functions)
-3. Then will verify if record duplicate, new record will be inserted into a separate Table [e.g.p2020] in db file (test.db by default) via SQLite3. 
+2. It will extract data from HTML Requests (searching for Apartment or House&Townhouse has two different functions)
+3. Then will verify if record is duplicated, new record will be inserted into a separate Table [e.g.p2020] in db file (test.db by default) via SQLite3. 
 4. After crawling all pages, it will sleep 24hrs [by default] then start again.
 
 ### Prerequisites
