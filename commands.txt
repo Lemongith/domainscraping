@@ -1,0 +1,2 @@
+docker run -it --rm --name my-scrapy -v /home/ec2-user/gitrepo/domainscrapy:/usr/src/myapp -w /usr/src/myapp python-image python code.py
+
